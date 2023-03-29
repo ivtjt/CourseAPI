@@ -16,6 +16,16 @@ class CourseService(val jdbc: JdbcTemplate) {
     fun createCourse(course: Course): String{
         val id = course.id ?: UUID.randomUUID().toString()
         jdbc.update("insert into courses values ( ?, ?, ?)", id, course.name, course.professor)
-        return "id : $id"
+        return id
+    }
+
+    fun updateCourse(course: Course): Course{
+        jdbc.update("update courses set name=?, professor=? where id=?", course.name, course.professor, course.id)
+        return course
+    }
+
+    fun deleteCourse(id: String): String{
+        jdbc.update("delete courses where id='$id'")
+        return "Success"
     }
 }
